@@ -1,0 +1,49 @@
+# We'll use defaults from the LLVM style, but with 4 columns indentation.
+BasedOnStyle: LLVM
+IndentWidth: 2
+---
+Language: Cpp
+# Force pointers to the type for C++.
+DerivePointerAlignment: false
+PointerAlignment: Left
+# 120 cols
+ColumnLimit: 120
+Cpp11BracedListStyle: true
+# break brace style
+BreakBeforeBraces: Custom
+BraceWrapping:
+        AfterClass: true
+        AfterControlStatement: true
+        AfterEnum: true
+        AfterFunction: true
+        AfterNamespace: true
+        AfterStruct: true
+        AfterUnion: true
+        BeforeCatch: true
+        BeforeElse: true
+
+NamespaceIndentation: All
+FixNamespaceComments: true
+
+IndentWrappedFunctionNames: false # Do not indent after function def break
+AllowShortFunctionsOnASingleLine: Inline
+AlwaysBreakTemplateDeclarations: true
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignEscapedNewlines: Right
+AlignOperands: true
+AlignTrailingComments: true
+BreakConstructorInitializers: BeforeComma
+BreakStringLiterals: true
+CompactNamespaces: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ConstructorInitializerIndentWidth: 2
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+MaxEmptyLinesToKeep: 2
+
+# For loop
+ForEachMacros: ['mln_forall', 'mln_foreach', 'mln_foreach_new', 'mln_reverse_foreach']

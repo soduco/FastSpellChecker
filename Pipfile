@@ -1,0 +1,5 @@
+[packages]
+libdictionary = {path = "."}
+
+[dev-packages]
+pytest = "*"
