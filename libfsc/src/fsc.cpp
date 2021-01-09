@@ -1,4 +1,5 @@
-#include <dictionary.hpp>
+#include <fsc.hpp>
+
 #include <cstdint>
 #include <cstring>
 #include <climits>

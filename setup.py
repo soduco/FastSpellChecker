@@ -6,21 +6,21 @@ __version__ = "0.0.1"
 
 ext_modules = [
     Pybind11Extension(
-        "libdictionary",
-        sources = [ "pylibdictionary/dictionary.cpp", "libdictionary/src/dictionary.cpp"],
+        "fastspellchecker",
+        sources = [ "FastSpellChecker/FastSpellChecker.cpp", "libfsc/src/fsc.cpp"],
         cxx_std=17,
-        include_dirs=["libdictionary/include"],
+        include_dirs=["libfsc/include"],
         extra_link_args = ['-static-libstdc++']
     ),
 ]
 
 setup(
-    name="libdictionary",
+    name="fastspellchecker",
     version=__version__,
     author="Edwin Carlinet",
     author_email="edwin.carlinet@lrde.epita.fr",
     url="FIXME",
-    description="A test project using pybind11",
+    description="",
     long_description="",
     ext_modules=ext_modules,
     # Currently, build_ext only provides an optional "highest supported C++

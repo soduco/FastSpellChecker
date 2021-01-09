@@ -1,4 +1,4 @@
-project(dictionary)
+project(FastSpellChecker)
 cmake_minimum_required(VERSION 3.14)
 
 if (MSVC)
@@ -8,7 +8,7 @@ else()
     # lots of warnings and all warnings as errors
     add_compile_options(-Wall -Wextra)
 endif()
-add_subdirectory(libdictionary)
+add_subdirectory(libfsc)
 
 
 include(CTest)

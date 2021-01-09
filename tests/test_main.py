@@ -1,4 +1,4 @@
-from libdictionary import CPPDictionary
+from fastspellchecker import CPPDictionary
 
 
 def test_0():

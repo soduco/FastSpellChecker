@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "dictionary.hpp"
+#include "fsc.hpp"
 
 namespace py = pybind11;
 
@@ -48,7 +48,7 @@ private:
 };
 
 
-PYBIND11_MODULE(libdictionary, m) {
+PYBIND11_MODULE(fastspellchecker, m) {
   m.doc() = R"docstring(
         Pybind11 example plugin
         -----------------------

@@ -1,5 +1,6 @@
+#include <fsc.hpp>
+
 #include <gtest/gtest.h>
-#include <dictionary.hpp>
 #include <string>
 
 using namespace std::literals;

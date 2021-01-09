@@ -1,5 +1,5 @@
 [packages]
-libdictionary = {path = "."}
+fastspellchecker = {path = "."}
 
 [dev-packages]
 pytest = "*"
