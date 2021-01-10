@@ -19,8 +19,8 @@ setup(
     version=__version__,
     author="Edwin Carlinet",
     author_email="edwin.carlinet@lrde.epita.fr",
-    url="FIXME",
-    description="",
+    url="https://github.com/soduco/FastSpellChecker",
+    description="A dependancy-free C++ Spell Checker with Python bindings",
     long_description="",
     ext_modules=ext_modules,
     # Currently, build_ext only provides an optional "highest supported C++
