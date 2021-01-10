@@ -49,7 +49,12 @@ namespace
     static constexpr int DATA_MASK = 0xFF000000;
     static constexpr int DATA_SHIFT = 48;
 
-    match_info_t() = default;
+    match_info_t()
+    {
+      this->m_distance = 0;
+      this->m_pos_del = -1;
+      this->m_ptr = 0;
+    }
 
     match_info_t(const char* original_word, int distance, int deletion_pos = -1)
     {
@@ -80,9 +85,9 @@ namespace
     }
 
   private:
-    int            m_distance : 4 = 0;
-    int            m_pos_del : 12 = -1;
-    std::uintptr_t m_ptr : 48     = 0;
+    int            m_distance : 4;
+    int            m_pos_del : 12;
+    std::uintptr_t m_ptr : 48;
   };
 
   using matches_t = std::vector<match_info_t>;
