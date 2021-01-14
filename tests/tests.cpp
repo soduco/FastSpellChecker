@@ -33,9 +33,23 @@ TEST(Dico, simple)
     ASSERT_EQ(m.count, 2) << "with ab";
     ASSERT_TRUE(m.word == "aba"sv || m.word == "bab"sv);
   }
-  
-
 }
+
+TEST(DICO, test_substitutions)
+{
+  Dictionary t;
+  {
+    std::string_view data[] = {"RUE DES MARGUETTES"};
+    t.load(data, 1);
+  };
+
+  {
+    auto m = t.best_match("RUE DEs MARGUATTES", 2);
+    ASSERT_EQ(m.distance, 2);
+    ASSERT_EQ(m.count, 1);
+  }
+}
+
 
 extern std::string_view test_data[];
 extern std::size_t test_data_size;

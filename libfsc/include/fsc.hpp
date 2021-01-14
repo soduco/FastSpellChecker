@@ -18,6 +18,7 @@ struct DictionaryMatch
 std::ostream& operator<< (std::ostream& os, const DictionaryMatch& m);
 
 
+
 class Dictionary
 {
 public:
@@ -33,3 +34,4 @@ public:
 private:
   std::unique_ptr<DictionaryImplBase> m_impl;
 };
+
