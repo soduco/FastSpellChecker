@@ -7,7 +7,7 @@ __version__ = "0.0.1"
 ext_modules = [
     Pybind11Extension(
         "fastspellchecker",
-        sources = [ "FastSpellChecker/FastSpellChecker.cpp", "libfsc/src/fsc.cpp", "libfsc/include/fsc.hpp"],
+        sources = [ "FastSpellChecker/FastSpellChecker.cpp", "libfsc/src/fsc.cpp"],
         cxx_std=17,
         include_dirs=["libfsc/include"],
         extra_link_args = ['-static-libstdc++']
