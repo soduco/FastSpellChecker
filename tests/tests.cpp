@@ -33,7 +33,24 @@ TEST(Dico, simple)
     ASSERT_EQ(m.count, 2) << "with ab";
     ASSERT_TRUE(m.word == "aba"sv || m.word == "bab"sv);
   }
+
+  {
+    std::string_view data[] = { "Saint Denis" };
+    t.load(data, 1);
+
+    auto m = t.best_match("saint denis", 2);
+    ASSERT_EQ(m.distance, 2);
+    ASSERT_EQ(m.count, 1);
+    ASSERT_TRUE(m.word == "Saint Denis"sv);
+  }
 }
+
+
+
+
+
+
+
 
 TEST(DICO, test_substitutions)
 {
@@ -49,6 +66,10 @@ TEST(DICO, test_substitutions)
     ASSERT_EQ(m.count, 1);
   }
 }
+
+
+
+
 
 
 extern std::string_view test_data[];

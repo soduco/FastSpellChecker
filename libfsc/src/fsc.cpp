@@ -55,7 +55,7 @@ namespace
     {
       this->m_distance         = 0;
       this->m_ptr              = 0;
-      std::memset(this->m_pos_deletions, -1, 4);
+      std::memset(this->m_pos_deletions, -1, kMaxDist + 1);
     }
 
 
@@ -70,7 +70,7 @@ namespace
     friend std::ostream& operator<<(std::ostream& os, match_info_t x)
     {
       os << "(" << x.get_word() << ", d=" << x.get_distance() << ", p=";
-      for (int i = 0; i < kMaxDist; ++i)
+      for (int i = 0; i < kMaxDist + 1; ++i)
         os << (int)x.m_pos_deletions[i] << ',';
       os << ")";
       return os;
@@ -83,7 +83,7 @@ namespace
       int            m_pos_del : 12;
       std::uintptr_t m_ptr : 48;
     };
-    int8_t           m_pos_deletions[kMaxDist];
+    int8_t           m_pos_deletions[kMaxDist + 1];
   };
 
   using matches_t = std::vector<match_info_t>;
@@ -207,7 +207,7 @@ namespace
       // a_deletion_pos and b_deletion_pos are sorted
       int i = a;
       int j = b;
-      int subst = 0;
+      int subst = std::min(a, b);
       while (a_deletion_pos[i] != -1 and b_deletion_pos[j] != -1)
       {
         int del_pos_a = (a_deletion_pos[i] - a);
@@ -263,7 +263,13 @@ namespace
         {
           // Possible substitution instead of indels
           s = levenshtein_of(del_pos, m.get_deletion_positions());
-          //std::cout << "(" << buffer << "," << m.get_word() << ") = " << s << "\n";
+          /*
+          std::cout << '[';
+          for (int i = 0; i <= current_score; ++i)
+            std::cout << (int)del_pos[i] << ",";
+          std::cout << "] vs " << m << "\n";
+          std::cout << "(" << buffer << "," << m.get_word() << ") = " << s << "\n";
+          */
         }
 
         if (s < best_match.distance)
