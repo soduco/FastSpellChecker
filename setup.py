@@ -6,7 +6,7 @@ __version__ = "0.0.2"
 
 ext_modules = [
     Pybind11Extension(
-        "fastspellchecker",
+        "FastSpellChecker._backend",
         sources = [ "FastSpellChecker/FastSpellChecker.cpp", "libfsc/src/fsc.cpp"],
         cxx_std=17,
         include_dirs=["libfsc/include"],
@@ -23,6 +23,7 @@ setup(
     description="A dependancy-free C++ Spell Checker with Python bindings",
     long_description="",
     ext_modules=ext_modules,
+    py_modules=["FastSpellChecker"],
     # Currently, build_ext only provides an optional "highest supported C++
     # level" feature, but in the future it may provide more features.
     # cmdclass={"build_ext": build_ext},

@@ -26,9 +26,11 @@ public:
   ~Dictionary();
 
   void              load(std::string_view word_list[], std::size_t n);
+  void              add_word(std::string_view word);
   bool              has_matches(std::string_view word, int d);
   DictionaryMatch   best_match(std::string_view word, int d);
 
+  int               max_word_length() const noexcept;
 
   struct DictionaryImplBase;
 private:

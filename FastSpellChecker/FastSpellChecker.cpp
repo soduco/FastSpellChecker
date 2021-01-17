@@ -11,22 +11,14 @@ public:
   void load(std::vector<std::string_view> word_list)
   {
     m_handle.load(word_list.data(), word_list.size());
-    /*
-    auto sz = py::len(word_list);
-
-    std::vector<std::string_view> wl;
-    wl.reserve(sz);
-
-    for (auto w : word_list)
-    {
-      if (!py::isinstance<py::str>(w))
-        throw py::type_error("A list of 'str' was expected.")
-
-      PyObject*   o   = w.ptr();
-      const char* ptr = PyUnicode_AS_DATA(o);
-      std::size_t
-    */
   }
+
+  void add_word(std::string_view word)
+  {
+    m_handle.add_word(word);
+  }
+
+  int max_word_length() const { return m_handle.max_word_length(); }
 
   bool has_matches(std::string_view word, int d) { return m_handle.has_matches(word, d); }
 
@@ -48,7 +40,7 @@ private:
 };
 
 
-PYBIND11_MODULE(fastspellchecker, m) {
+PYBIND11_MODULE(_backend, m) {
   m.doc() = R"docstring(
         Pybind11 example plugin
         -----------------------
@@ -63,7 +55,10 @@ PYBIND11_MODULE(fastspellchecker, m) {
     .def(py::init<>())
     .def("load", &CPPDictionary::load)
     .def("has_matches", &CPPDictionary::has_matches)
-    .def("best_match", &CPPDictionary::best_match);
+    .def("best_match", &CPPDictionary::best_match)
+    .def("add_word", &CPPDictionary::add_word)
+    .def("max_word_length", &CPPDictionary::max_word_length)
+    ;
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
