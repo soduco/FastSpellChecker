@@ -1,5 +1,5 @@
 [packages]
-fastspellchecker = {path = "."}
+fastspellchecker = {editable = true, path = "."}
 
 [dev-packages]
 pytest = "*"
