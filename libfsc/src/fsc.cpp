@@ -24,6 +24,7 @@ struct Dictionary::DictionaryImplBase
   virtual void              load(std::string_view word_list[], std::size_t n)       = 0;
   virtual bool              has_matches(std::string_view word, int d) const         = 0;
   virtual DictionaryMatch   best_match(std::string_view word, int d) const          = 0;
+  virtual void              add_word(std::string_view word)                         = 0;
 };
 
 namespace
@@ -94,6 +95,7 @@ namespace
     void            load(std::string_view word_list[], std::size_t n) final;
     bool            has_matches(std::string_view word, int d) const final;
     DictionaryMatch best_match(std::string_view word, int d) const final;
+    void            add_word(std::string_view word) final;
 
   private:
     void add_word(char buffer[], int len, int subtr_start, match_info_t from, int max_dist);
@@ -129,19 +131,26 @@ namespace
     return key;
   }
 
-  void DictionaryImplHashTable::load(std::string_view word_list[], std::size_t n)
+  void DictionaryImplHashTable::add_word(std::string_view word)
   {
     char buffer[kMaxWordLength + 1];
-    for (std::size_t i = 0; i < n; ++i)
-    {
-      auto len = word_list[i].size();
-      if (len >= kMaxWordLength)
-        throw std::runtime_error("Word exceeds max length (255)");
 
-      std::memcpy(buffer, word_list[i].data(), len);
-      buffer[len] = 0;
-      this->add_word(buffer, len, 0, match_info_t{}, kMaxDist);
-    }
+    auto len = word.size();
+    if (len >= kMaxWordLength)
+      throw std::runtime_error("Word exceeds max length (255)");
+
+    std::memcpy(buffer, word.data(), len);
+    buffer[len] = 0;
+    this->add_word(buffer, len, 0, match_info_t{}, kMaxDist);
+  }
+
+  void DictionaryImplHashTable::load(std::string_view word_list[], std::size_t n)
+  {
+    m_dic.clear();
+    m_words.clear();
+
+    for (std::size_t i = 0; i < n; ++i)
+      this->add_word(word_list[i]);
 
     // Debug dict
     /*
@@ -193,31 +202,24 @@ namespace
   namespace
   {
 
-
-    int levenshtein_of(const int8_t a_deletion_pos[], const int8_t b_deletion_pos[])
+    int levenshtein_of(const int8_t u[], const int8_t v[])
     {
-      int a = 0;
-      int b = 0;
-      while (a_deletion_pos[a] == a)
-        a++;
-      while (b_deletion_pos[b] == b)
-        b++;
-
-
-      // a_deletion_pos and b_deletion_pos are sorted
-      int i = a;
-      int j = b;
-      int subst = std::min(a, b);
-      while (a_deletion_pos[i] != -1 and b_deletion_pos[j] != -1)
+      // a = u'[i] = u[i] - i (convert to insertions)
+      // b = v'[j] = v[j] - j (convert to insertions)
+      int i           = 0;
+      int j           = 0;
+      int count_subst = 0;
+      while (u[i] != -1 and v[j] != -1)
       {
-        int del_pos_a = (a_deletion_pos[i] - a);
-        int del_pos_b = (b_deletion_pos[i] - b);
-        if( del_pos_a == del_pos_b)
+        int a = u[i] - i;
+        int b = v[j] - j;
+        if (a == b)
         {
-          subst++;
-          i++; j++;
+          count_subst++;
+          i++;
+          j++;
         }
-        else if (del_pos_a < del_pos_b)
+        else if (a < b)
         {
           i++;
         }
@@ -226,12 +228,13 @@ namespace
           j++;
         }
       }
-      while (a_deletion_pos[i] != -1)
+
+      while (u[i] != -1)
         i++;
-      while (b_deletion_pos[j] != -1)
+      while (v[j] != -1)
         j++;
 
-      return i + j - subst;
+      return i + j - count_subst;
     }
   }
 
@@ -360,6 +363,7 @@ namespace
 
 Dictionary::Dictionary()
 {
+  m_impl = std::make_unique<DictionaryImplHashTable>();
 }
 
 
@@ -370,9 +374,14 @@ Dictionary::~Dictionary()
 
 void Dictionary::load(std::string_view word_list[], std::size_t n)
 {
-  m_impl = std::make_unique<DictionaryImplHashTable>();
   m_impl->load(word_list, n);
 }
+
+void Dictionary::add_word(std::string_view word)
+{
+  m_impl->add_word(word);
+}
+
 
 namespace
 {
@@ -394,13 +403,18 @@ bool Dictionary::has_matches(std::string_view word, int d)
 }
 
 
+
+int Dictionary::max_word_length() const noexcept
+{
+  return kMaxWordLength;
+}
+
+
 DictionaryMatch Dictionary::best_match(std::string_view word, int d)
 {
   check_params(word, d);
   return m_impl->best_match(word, d);
 }
-
-
 
 
 DictionaryMatch::operator bool() const

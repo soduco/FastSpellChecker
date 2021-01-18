@@ -43,6 +43,16 @@ TEST(Dico, simple)
     ASSERT_EQ(m.count, 1);
     ASSERT_TRUE(m.word == "Saint Denis"sv);
   }
+
+  {
+    std::string_view data[] = { "prout", "pret", "part", "tourte"  };
+    t.load(data, 4);
+
+    auto m = t.best_match("pro", 2);
+    ASSERT_EQ(m.count, 3);
+    ASSERT_EQ(m.distance, 2);
+    ASSERT_TRUE(m.word == "prout"sv || m.word == "pret"sv || m.word == "part"sv);
+  }
 }
 
 
