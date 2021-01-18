@@ -2,7 +2,7 @@ from setuptools import setup
 from pybind11.setup_helpers import Pybind11Extension
 
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 ext_modules = [
     Pybind11Extension(
@@ -23,7 +23,7 @@ setup(
     description="A dependancy-free C++ Spell Checker with Python bindings",
     long_description="",
     ext_modules=ext_modules,
-    py_modules=["FastSpellChecker"],
+    packages=["FastSpellChecker"],
     # Currently, build_ext only provides an optional "highest supported C++
     # level" feature, but in the future it may provide more features.
     # cmdclass={"build_ext": build_ext},
